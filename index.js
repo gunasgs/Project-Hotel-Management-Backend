@@ -245,6 +245,23 @@ app.put("/roomsedit/:id", async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 });
+app.get("/home/:id", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    let bookings = await db
+      .collection("users")
+      .findOne({ _id: mongodb.ObjectId(req.params.id) });
+
+    await connection.close();
+
+    res.json(bookings);
+  } catch (error) {
+    res.status(500).json({ messege: "error" });
+  }
+});
 
 app.put("/home/:id", async (req, res) => {
   try {
