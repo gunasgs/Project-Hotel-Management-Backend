@@ -57,7 +57,21 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ messege: "error" });
   }
 });
+app.get("/home", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
 
+    let db = connection.db("sample");
+
+    let datas = await db.collection("users").find().toArray();
+
+    await connection.close();
+
+    res.json(datas);
+  } catch (error) {
+    res.status(500).json({ messege: "error" });
+  }
+});
 // booking room
 
 app.post("/booking", async (req, res) => {
