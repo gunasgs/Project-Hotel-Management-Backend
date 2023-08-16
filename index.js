@@ -245,7 +245,7 @@ app.put("/roomsedit/:id", async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 });
-app.get("/homeview/:id", async (req, res) => {
+app.get("/userview/:id", async (req, res) => {
   try {
     let connection = await mongoClient.connect(URL);
 
@@ -263,7 +263,7 @@ app.get("/homeview/:id", async (req, res) => {
   }
 });
 
-app.put("/home/:id", async (req, res) => {
+app.put("/useredit/:id", async (req, res) => {
   try {
     let connection = await mongoClient.connect(URL);
 
