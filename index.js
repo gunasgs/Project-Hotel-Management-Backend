@@ -246,6 +246,23 @@ app.put("/roomsedit/:id", async (req, res) => {
   }
 });
 
+app.put("/home/:id", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    await db
+      .collection("users")
+      .updateOne({ _id: mongodb.ObjectId(req.params.id) }, { $set: req.body });
+
+    await connection.close();
+
+    res.json({ message: "users Updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
 // Added staff
 
 app.post("/staff", async (req, res) => {
