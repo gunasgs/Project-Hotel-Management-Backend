@@ -374,6 +374,98 @@ app.delete("/staff/:id", async (req, res) => {
   }
 });
 
+// Added student
+
+app.post("/students", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    await db.collection("students").insertOne(req.body);
+
+    await connection.close();
+
+    res.json({ messege: " Created" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ messege: "error" });
+  }
+});
+// get students Details
+
+app.get("/students", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    let datas = await db.collection("students").find().toArray();
+
+    await connection.close();
+
+    res.json(datas);
+  } catch (error) {
+    res.status(500).json({ messege: "error" });
+  }
+});
+// get perticular students
+
+app.get("/studentsview/:id", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    let students = await db
+      .collection("students")
+      .findOne({ _id: mongodb.ObjectId(req.params.id) });
+
+    await connection.close();
+
+    res.json(students);
+  } catch (error) {
+    res.status(500).json({ messege: "error" });
+  }
+});
+// update edit students
+
+app.put("/studentsedit/:id", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    await db
+      .collection("students")
+      .updateOne({ _id: mongodb.ObjectId(req.params.id) }, { $set: req.body });
+
+    await connection.close();
+
+    res.json({ message: " Updated" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+});
+// Delete students
+
+app.delete("/students/:id", async (req, res) => {
+  try {
+    let connection = await mongoClient.connect(URL);
+
+    let db = connection.db("sample");
+
+    await db
+      .collection("students")
+      .deleteOne({ _id: mongodb.ObjectId(req.params.id) }, { $set: req.body });
+
+    await connection.close();
+
+    res.json({ messege: "deleted" });
+  } catch (error) {
+    res.status(500).json({ messege: "error" });
+  }
+});
 app.listen(PORT, () => {
   console.log(`server start ${PORT}`);
 });
